@@ -11,8 +11,14 @@ def my_dif(x,y):
     z = x - y
     return z
 
+# 2つの変数の商を計算する自作関数
 def my_waru(x,y):
     z=x/y
+    return z
+
+# 2つの変数の積を計算する自作関数
+def my_kakeru(x,y):
+    z=x*y
     return z
 
 #CSVファイルの内容をdataframeに入れて返す。
