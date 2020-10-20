@@ -1,4 +1,5 @@
 import pandas as pd
+import glob
 from chardet.universaldetector import UniversalDetector
 
 # 2つの変数の和を計算する自作関数
@@ -34,3 +35,13 @@ def readcsv(filepath,headerCol):
     detector.close()
     df=pd.read_csv(filepath, header=headerCol,encoding=detector.result['encoding'])
     return df
+
+#フォルダ内にある複数のCSVファイルの内容をdataframeに入れて返す。
+def readcsvfiles(filepath):
+  csv_files = glob.glob(filepath+'*.csv')
+  list = []
+  for file in csv_files:
+    list.append(pd.read_csv(file))
+
+  df = pd.concat(list)
+  return df
