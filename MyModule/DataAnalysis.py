@@ -48,7 +48,7 @@ def readcsvfiles(filepath):
   return df
 
 #ヒストグラムを作成して、グラフを保存する。
-def graph_hist(data,bins_number,title,xlabel,ylabel,path):
+def graph_hist(data,bins_number=10,title,xlabel='x',ylabel='y',path):
   # 画像準備
   fig = plt.figure()
   # ヒストグラムを出力
