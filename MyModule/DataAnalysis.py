@@ -1,6 +1,7 @@
 import pandas as pd
 import glob
 from chardet.universaldetector import UniversalDetector
+import matplotlib.pyplot as plt
 
 # 2つの変数の和を計算する自作関数
 def my_sum(x,y):
@@ -45,3 +46,18 @@ def readcsvfiles(filepath):
 
   df = pd.concat(list)
   return df
+
+#ヒストグラムを作成して、グラフを保存する。
+def graph_hist(data,bins_number,title,xlabel,ylabel,path):
+  # 画像準備
+  fig = plt.figure()
+  # ヒストグラムを出力
+  plt.hist(data,bins=bins_number)
+  # グラフの指定
+  plt.title(title)
+  # x方向のラベル
+  plt.xlabel(xlabel)
+  # y方向のラベル
+  plt.ylabel(ylabel)
+  # グラフをファイルに保存する
+  fig.savefig(path)
