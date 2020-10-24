@@ -55,9 +55,24 @@ def graph_hist(data,bins_number=10,title,xlabel='x',ylabel='y',path):
   plt.hist(data,bins=bins_number)
   # グラフの指定
   plt.title(title)
-  # x方向のラベル
+  # x軸のラベル
   plt.xlabel(xlabel)
-  # y方向のラベル
+  # y軸のラベル
+  plt.ylabel(ylabel)
+  # グラフをファイルに保存する
+  fig.savefig(path)
+
+#散布図を作成して、グラフに保存する。
+def graph_scatterplot(data_x,data_y,title,xlabel='x',ylabel='y',path)
+  # 画像準備
+  fig = plt.figure()
+  # 散布図を出力
+  .scatter(data_x,data_y)
+  # グラフの指定
+  plt.title(title)
+  # x軸のラベル
+  plt.xlabel(xlabel)
+  # y軸のラベル
   plt.ylabel(ylabel)
   # グラフをファイルに保存する
   fig.savefig(path)
