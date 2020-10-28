@@ -2,30 +2,32 @@ import pandas as pd
 import glob
 from chardet.universaldetector import UniversalDetector
 import matplotlib.pyplot as plt
+import shutil
+import os
 
-# 2‚Â‚Ì•Ï”‚Ì˜a‚ğŒvZ‚·‚é©ìŠÖ”
+# 2ã¤ã®å¤‰æ•°ã®å’Œã‚’è¨ˆç®—ã™ã‚‹è‡ªä½œé–¢æ•°
 def my_sum(x,y):
     z = x + y
     return z
 
-# 2‚Â‚Ì•Ï”‚Ì·‚ğŒvZ‚·‚é©ìŠÖ”
+# 2ã¤ã®å¤‰æ•°ã®å·®ã‚’è¨ˆç®—ã™ã‚‹è‡ªä½œé–¢æ•°
 def my_dif(x,y):
     z = x - y
     return z
 
-# 2‚Â‚Ì•Ï”‚Ì¤‚ğŒvZ‚·‚é©ìŠÖ”
+# 2ã¤ã®å¤‰æ•°ã®å•†ã‚’è¨ˆç®—ã™ã‚‹è‡ªä½œé–¢æ•°
 def my_waru(x,y):
     z=x/y
     return z
 
-# 2‚Â‚Ì•Ï”‚ÌÏ‚ğŒvZ‚·‚é©ìŠÖ”
+# 2ã¤ã®å¤‰æ•°ã®ç©ã‚’è¨ˆç®—ã™ã‚‹è‡ªä½œé–¢æ•°
 def my_kakeru(x,y):
     z=x*y
     return z
 
-#CSVƒtƒ@ƒCƒ‹‚Ì“à—e‚ğdataframe‚É“ü‚ê‚Ä•Ô‚·B
-#filepath:ƒtƒ@ƒCƒ‹ƒpƒX
-#hederCol:ƒwƒbƒ_[s
+#CSVãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’dataframeã«å…¥ã‚Œã¦è¿”ã™ã€‚
+#filepath:ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+#hederCol:ãƒ˜ãƒƒãƒ€ãƒ¼è¡Œ
 def readcsv(filepath,headerCol):
     detector = UniversalDetector()
     with open(filepath, mode='rb') as f:
@@ -37,7 +39,7 @@ def readcsv(filepath,headerCol):
     df=pd.read_csv(filepath, header=headerCol,encoding=detector.result['encoding'])
     return df
 
-#ƒtƒHƒ‹ƒ_“à‚É‚ ‚é•¡”‚ÌCSVƒtƒ@ƒCƒ‹‚Ì“à—e‚ğdataframe‚É“ü‚ê‚Ä•Ô‚·B
+#ãƒ•ã‚©ãƒ«ãƒ€å†…ã«ã‚ã‚‹è¤‡æ•°ã®CSVãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã‚’dataframeã«å…¥ã‚Œã¦è¿”ã™ã€‚
 def readcsvfiles(filepath):
   csv_files = glob.glob(filepath+'*.csv')
   list = []
@@ -47,32 +49,40 @@ def readcsvfiles(filepath):
   df = pd.concat(list)
   return df
 
-#ƒqƒXƒgƒOƒ‰ƒ€‚ğì¬‚µ‚ÄAƒOƒ‰ƒt‚ğ•Û‘¶‚·‚éB
-def graph_hist(data,bins_number=10,title,xlabel='x',ylabel='y',path):
-  # ‰æ‘œ€”õ
+#ãƒ’ã‚¹ãƒˆã‚°ãƒ©ãƒ ã‚’ä½œæˆã—ã¦ã€ã‚°ãƒ©ãƒ•ã‚’ä¿å­˜ã™ã‚‹ã€‚
+def graph_hist(path,data,bins_number=10,title='hist',xlabel='x',ylabel='y'):
+  # ç”»åƒæº–å‚™
   fig = plt.figure()
-  # ƒqƒXƒgƒOƒ‰ƒ€‚ğo—Í
+  # ãƒ’ã‚¹ãƒˆã‚°ãƒ©ãƒ ã‚’å‡ºåŠ›
   plt.hist(data,bins=bins_number)
-  # ƒOƒ‰ƒt‚Ìw’è
+  # ã‚°ãƒ©ãƒ•ã®æŒ‡å®š
   plt.title(title)
-  # x²‚Ìƒ‰ƒxƒ‹
+  # xè»¸ã®ãƒ©ãƒ™ãƒ«
   plt.xlabel(xlabel)
-  # y²‚Ìƒ‰ƒxƒ‹
+  # yè»¸ã®ãƒ©ãƒ™ãƒ«
   plt.ylabel(ylabel)
-  # ƒOƒ‰ƒt‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é
+  # ã‚°ãƒ©ãƒ•ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹
   fig.savefig(path)
 
-#U•z}‚ğì¬‚µ‚ÄAƒOƒ‰ƒt‚É•Û‘¶‚·‚éB
-def graph_scatterplot(data_x,data_y,title,xlabel='x',ylabel='y',path)
-  # ‰æ‘œ€”õ
+#æ•£å¸ƒå›³ã‚’ä½œæˆã—ã¦ã€ã‚°ãƒ©ãƒ•ã«ä¿å­˜ã™ã‚‹ã€‚
+def graph_scatterplot(path,data_x,data_y,title='scatterplot',xlabel='x',ylabel='y'):
+  # ç”»åƒæº–å‚™
   fig = plt.figure()
-  # U•z}‚ğo—Í
-  .scatter(data_x,data_y)
-  # ƒOƒ‰ƒt‚Ìw’è
+  # æ•£å¸ƒå›³ã‚’å‡ºåŠ›
+  plt.scatter(data_x,data_y)
+  # ã‚°ãƒ©ãƒ•ã®æŒ‡å®š
   plt.title(title)
-  # x²‚Ìƒ‰ƒxƒ‹
+  # xè»¸ã®ãƒ©ãƒ™ãƒ«
   plt.xlabel(xlabel)
-  # y²‚Ìƒ‰ƒxƒ‹
+  # yè»¸ã®ãƒ©ãƒ™ãƒ«
   plt.ylabel(ylabel)
-  # ƒOƒ‰ƒt‚ğƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚é
+  # ã‚°ãƒ©ãƒ•ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹
   fig.savefig(path)
+
+#ãƒ•ã‚©ãƒ«ãƒ€å†…ã‚’ç©ºã«ã™ã‚‹ã€‚
+def create_folder(path):
+  if os.path.isdir(path):
+    #ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®å‰Šé™¤
+    shutil.rmtree(path)
+  #ãƒ•ã‚©ãƒ«ãƒ€ã®ä½œæˆ
+  os.mkdir(path)
