@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 from chardet.universaldetector import UniversalDetector
 import matplotlib.pyplot as plt
+import japanize_matplotlib
 import shutil
 import os
 
@@ -86,3 +87,11 @@ def create_folder(path):
     shutil.rmtree(path)
   #フォルダの作成
   os.mkdir(path)
+
+#データフレーム内の列をヒストグラムを保存する。
+def df_graph_hist(path,df_data):
+  #文字列データを除く
+  df_data.select_dtypes(exclude=object)
+  #すべての列でヒストグラムをグラフ化し、画像を保存する。
+  for colum_name,item in df_data.iteritems():
+    graph_hist(path+'\\'+colum_name+'.png',item,bins_number=10,title=colum_name,xlabel='x',ylabel='y')
