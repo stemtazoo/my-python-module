@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import japanize_matplotlib
 import shutil
 import os
+import openpyxl
+from openpyxl import Workbook
+from openpyxl.chart import ScatterChart, Reference, Series
 
 # 2つの変数の和を計算する自作関数
 def my_sum(x,y):
@@ -95,3 +98,29 @@ def df_graph_hist(path,df_data):
   #すべての列でヒストグラムをグラフ化し、画像を保存する。
   for colum_name,item in df_data.iteritems():
     graph_hist(path+'\\'+colum_name+'.png',item,bins_number=10,title=colum_name,xlabel='x',ylabel='y')
+
+#エクセルファイルで散布図を作成する。
+def excel_graph_scatter(path,WSName,column_x,column_y_min,column_y_num,row_min,row_max,title):
+  #ワークブックを開く
+  wb = openpyxl.load_workbook(path)
+  #ScatterChartオブジェクトを作成
+  chart = ScatterChart()
+  #グラフのX軸の範囲を設定する為に、Referenceオブジェクト作る
+  x_values = Reference(wb[WSName], min_col = column_x, min_row = row_min, max_row = row_max)
+  #データの書き込み
+  for i in range(0, column_y_num):
+    min_col = i + column_y_min
+    #データの範囲(Y軸)をReferenceで選択
+    values = Reference(wb[WSName], min_col = min_col, min_row = row_min, max_row = row_max)
+    #Seriesオブジェクトを作成
+    series = Series(values, x_values, title=i)
+    #線を消す
+    series.graphicalProperties.line.noFill = True
+    #マーカーを表示する
+    series.marker.symbol = 'circle'
+    #散布図として定義したchartへデータを指定したseries変数を渡す
+    chart.series.append(series)
+  #B2セルにグラフを表示
+  wb[WSName].add_chart(chart,"B2")
+  #Fileを保存
+  wb.save(path)
