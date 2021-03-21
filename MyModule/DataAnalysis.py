@@ -93,6 +93,8 @@ def create_folder(path):
 
 #データフレーム内の列をヒストグラムを保存する。
 def df_graph_hist(path,df_data):
+　#path:グラフを保存するフォルダ
+　#df_data:計算するdataframe
   #文字列データを除く
   df_data.select_dtypes(exclude=object)
   #すべての列でヒストグラムをグラフ化し、画像を保存する。
